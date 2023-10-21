@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 import java.util.HashMap;
 
@@ -20,5 +18,7 @@ public class Bridge_Crossing
             Integer time = user_input.nextInt();
             people_time.put(Integer.toString(i), time);
         }
+
+        user_input.close();
     }
 }
