@@ -20,5 +20,6 @@ public class Bridge_Crossing
         }
 
         user_input.close();
+        State initilState = new State(people_time);
     }
 }
