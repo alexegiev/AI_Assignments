@@ -12,11 +12,14 @@ public class Bridge_Crossing
         int number_of_people = user_input.nextInt();                        //number of pleople
         
         HashMap<String, Integer> people_time = new HashMap<String, Integer>();
+        String name;
         for(int i = 1; i <= number_of_people; i++)
         {
-            System.out.println("How much time does the " + i + " person need in minutes? ");
+            System.out.println("What is the name of the person? ");
+            name = user_input.next();
+            System.out.println("How much time does " + name + " need in minutes? ");
             Integer time = user_input.nextInt();
-            people_time.put(Integer.toString(i), time);
+            people_time.put(name, time);
         }
 
         System.out.println("What is the available time in minutes? ");
