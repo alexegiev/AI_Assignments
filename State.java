@@ -4,12 +4,14 @@ public class State implements Comparable<State> {
     
     //heuristic score
     private int score;
-    private HashMap<String, Integer> people_at_start = new HashMap<String, Integer>();
-    private HashMap<String, Integer> people_at_finish = new HashMap<String, Integer>();
+    private HashMap<String, Integer> people_at_start = new HashMap<String, Integer>();  //this Hashmap represents how many people are at the start
+    private HashMap<String, Integer> people_at_finish = new HashMap<String, Integer>(); //this Hashmap represents how many people are at the end
+    private int torch_position;                                     // position of torch in binary value. 0 at beginning, 1 at the end
 
     State(HashMap<String, Integer> people_at_start)
     {
         this.people_at_start = people_at_start;
+        this.torch_position = 0;
     }
 
     @Override
