@@ -9,9 +9,7 @@ public class State implements Comparable<State> {
     private State father = null;
 
     private int f;      //f: heuristic score
-
     private int h;      //h: cost of reaching the goal from current node
-
     private int g;      //g: cost of reaching the current node from the initial node
 
     public State()
