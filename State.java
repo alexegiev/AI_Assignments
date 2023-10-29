@@ -1,4 +1,4 @@
-import java.util.HashMap;
+import java.util.*;
 
 public class State implements Comparable<State> {
 
@@ -7,8 +7,12 @@ public class State implements Comparable<State> {
     private int torch_position;                                     // position of torch in binary value. 0 at beginning, 1 at the end
     private int available_time;                                     // the available time to pass the bridge
     private State father = null;
-    private int score;                                              //heuristic score
-    private int f, h, g;
+
+    private int f;      //f: heuristic score
+
+    private int h;      //h: cost of reaching the goal from current node
+
+    private int g;      //g: cost of reaching the current node from the initial node
 
     public State()
     {
@@ -71,12 +75,12 @@ public class State implements Comparable<State> {
 
     public int getTotalTime()
     {
-        return this.totalTime;
+        return this.available_time;
     }
 
     public void setTotalTime(int time)
     {
-        this.totalTime = time;
+        this.available_time = time;
     }
 
     public void evaluate()
