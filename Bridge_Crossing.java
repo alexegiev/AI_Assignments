@@ -14,12 +14,15 @@ public class Bridge_Crossing
         HashMap<String, Integer> people_time = new HashMap<String, Integer>();
         for(int i = 1; i <= number_of_people; i++)
         {
-            System.out.println("How much time does the " + i + " person need? ");
+            System.out.println("How much time does the " + i + " person need in minutes? ");
             Integer time = user_input.nextInt();
             people_time.put(Integer.toString(i), time);
         }
 
+        System.out.println("What is the available time in minutes? ");
+        int available_time = user_input.nextInt();
+
         user_input.close();
-        State initilState = new State(people_time);
+        State initilState = new State(people_time, available_time);
     }
 }
