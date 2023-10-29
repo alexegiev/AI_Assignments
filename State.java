@@ -103,6 +103,6 @@ public class State implements Comparable<State> {
     @Override
     public int compareTo(State s)
     {
-        return Double.compare(this.score, s.score); // compare based on the heuristic score.
+        return Double.compare(this.f, s.f); // compare based on the heuristic score.
     }
 }
