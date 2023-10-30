@@ -6,8 +6,8 @@ public class State implements Comparable<State> {
     private HashMap<String, Integer> people_at_finish = new HashMap<String, Integer>(); //this Hashmap represents how many people are at the end
     private int torch_position;                                     // position of torch in binary value. 0 at beginning, 1 at the end
     private int available_time;                                     // the available time to pass the bridge
-    private State father = null;
 
+    private State father = null;
     private int f;      //f: heuristic score
     private int h;      //h: cost of reaching the goal from current node
     private int g;      //g: cost of reaching the current node from the initial node
@@ -83,12 +83,15 @@ public class State implements Comparable<State> {
 
     public void evaluate()
     {
-        //calculate f...
+        this.f = this.g + this.h;
     }
 
     public void print() {}
 
-    public ArrayList<State> getChildren(int heuristic) {return null;}
+    public ArrayList<State> getChildren(int heuristic)
+    {
+        
+    }
 
     public boolean isFinal() {return true;}
 

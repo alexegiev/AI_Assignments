@@ -29,6 +29,6 @@ public class Bridge_Crossing
         State initialState = new State(people_time, available_time);
         Searcher searcher = new Searcher();
         long start = System.currentTimeMillis();
-        searcher.BestFS(initialState, heuristic);
+        searcher.BestFS(initialState, people_time.size());
     }
 }
