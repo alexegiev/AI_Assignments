@@ -88,7 +88,7 @@ public class State implements Comparable<State> {
 
     public void print() {}
 
-    public ArrayList<State> getChildren() {return null;}
+    public ArrayList<State> getChildren(int heuristic) {return null;}
 
     public boolean isFinal() {return true;}
 
