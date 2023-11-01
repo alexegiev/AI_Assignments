@@ -6,7 +6,7 @@ public class State implements Comparable<State> {
     private HashMap<String, Integer> people_at_finish = new HashMap<String, Integer>(); //this Hashmap represents how many people are at the end
     private int torch_position;                                     // position of torch in binary value. 0 at beginning, 1 at the end
     private int available_time;                                     // the available time to pass the bridge
-
+    int movement = 2;                                       //how many time is acceptable to move
     private State father = null;
     private int f;      //f: heuristic score
     private int h;      //h: cost of reaching the goal from current node
@@ -93,7 +93,70 @@ public class State implements Comparable<State> {
         return null;
     }
 
-    public boolean isFinal() {return true;}
+    //moves people and the torch to the end
+    private boolean move_to_end(String person1)
+    {
+        if(torch_position == 1)
+        {
+            return false;
+        }
+        if(movement <= 0)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    //moves people and the torch to the start
+    private boolean move_to_start(String person1)
+    {
+        if(torch_position == 0)
+        {
+            return false;
+        }
+        if(movement <= 0)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    //moves ba at the beginning one person and the torch
+    private void move_at_beginning()
+    {
+
+    }
+
+    //get the depth of the state
+    private void getDepth(State current_state)
+    {
+        setG(0);
+        while (current_state.getFather() != null)
+        {
+            setG(g++);
+            current_state = current_state.getFather();
+        }
+        getG();
+    }
+
+    //the heuristic function
+    private void count_people_at_start()
+    {
+        setH(people_at_start.size());
+    }
+
+    // if people_at_start is empty that means that everyone passed the bridge.
+    public boolean isFinal()
+    {
+        if (people_at_start.isEmpty())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     @Override
     public boolean equals(Object obj) {return true;}
