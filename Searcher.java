@@ -11,23 +11,23 @@ public class Searcher
         this.closedSet = new HashSet<>();
     }
 
-    State BestFS(State initialState, int heuristic)
+    State a_Star(State initialState, int heuristic)
     {
-        if(initialState.isFinal()) return initialState;
-        // step 1: put initial state in the frontier.
+        if (initialState.isFinal())
+        {
+            return initialState;
+        }
+
+        //put initial state in the frontier
         this.frontier.add(initialState);
-        // step 2: check for empty frontier.
+        //while the frontier is not empty
         while(this.frontier.size() > 0)
         {
-            // step 3: get the first node out of the frontier.
-            State currentState = this.frontier.remove(0);
-            // step 4: if final state, return.
-            if(currentState.isFinal()) return currentState;
-            // step 5: put the children at the frontier
-            this.frontier.addAll(currentState.getChildren(heuristic));
-            // step 6: sort the frontier based on the heuristic score to get best as first
-            Collections.sort(this.frontier);
+            ArrayList<int> cost; // list for costs
+            for(State state: frontier)
+            {
+                cost.add(state.getF()); //we get the f cost of every state in the frontier
+            }
         }
-        return null;
     }
 }
