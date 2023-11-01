@@ -90,7 +90,7 @@ public class State implements Comparable<State> {
 
     public ArrayList<State> getChildren(int heuristic)
     {
-        
+        return null;
     }
 
     public boolean isFinal() {return true;}
