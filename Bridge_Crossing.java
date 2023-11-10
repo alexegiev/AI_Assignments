@@ -8,7 +8,7 @@ public class Bridge_Crossing
         //used to get the number of people and the time that each one takes to cross the bridge
         Scanner user_input = new Scanner(System.in); 
 
-        System.out.println("How many poeple need to cross the bridge? ");
+        System.out.println("How many people need to cross the bridge? ");
         int number_of_people = user_input.nextInt();                        //number of pleople
         
         HashMap<String, Integer> people_time = new HashMap<String, Integer>();

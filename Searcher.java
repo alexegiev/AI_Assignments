@@ -11,7 +11,7 @@ public class Searcher
         this.closedSet = new HashSet<>();
     }
 
-    State a_Star(State initialState, int heuristic)
+    State a_Star(State initialState)
     {
         if (initialState.isFinal())
         {
@@ -45,7 +45,7 @@ public class Searcher
                 return state;
             }
             closedSet.add(state);
-            ArrayList<State> children = state.getChildren(state.getF());    //find all children of the state with the minimum cost
+            ArrayList<State> children = state.getChildren(state);    //find all children of the state with the minimum cost
             for (State child: children)
             {
                 //if child already in the closed set and above the state
