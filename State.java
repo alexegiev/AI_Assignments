@@ -6,7 +6,6 @@ public class State implements Comparable<State> {
     private HashMap<String, Integer> people_at_finish = new HashMap<String, Integer>(); //this Hashmap represents how many people are at the end
     private int torch_position;                                     // position of torch in binary value. 0 at beginning, 1 at the end
     private int available_time;                                     // the available time to pass the bridge
-    int movement = 2;                                       //how many time is acceptable to move
     private State father = null;
     private int f;      //f: heuristic score
     private int h;      //h: cost of reaching the goal from current node
@@ -90,19 +89,33 @@ public class State implements Comparable<State> {
 
     public ArrayList<State> getChildren(State state)
     {
-        ArrayList<State> children =null; //list of states for children
+        ArrayList<State> children = new ArrayList<State>(); //list of states for children
         if (torch_position == 0)    //checking if torch is at start
         {
+            //the game allows a SINGLE person with the torch to cross the bridge, so we will create a child with the state of one person only
+            for (String person: people_at_start.keySet())
+            {
+                if(move_to_end(people_at_start.get(person)))
+                {
+                        State child = new State();
+                        child.setFather(state);
+                        child.getDepth(state);
+                        child.move_person_to_end(person);
+                        children.add(child);
+                }
+            }
             for (String first_person: people_at_start.keySet())
             {
                 for (String second_person: people_at_start.keySet())
                 {
                     //we will check all possible transfers by pair, we create a child, set all his characteristics and then append to children list
-                    if(move_to_end(people_at_start.get(first_person), people_at_start.get(second_person)))
+                    if(first_person != second_person && move_to_end_by_pair(people_at_start.get(first_person), people_at_start.get(second_person)))
                     {
                         State child = new State();
                         child.setFather(state);
                         child.getDepth(state);
+                        child.move_person_to_end(first_person);
+                        child.move_person_to_end(second_person);
                         children.add(child);
                     }
                 }
@@ -110,16 +123,30 @@ public class State implements Comparable<State> {
         }
         else if (torch_position == 1)   //checking if torch is at the end
         {
+            //the game allows a SINGLE person with the torch to cross the bridge, so we will create a child with the state of one person only
+            for (String person: people_at_finish.keySet())
+            {
+                if (move_to_start(people_at_finish.get(person)))
+                {
+                        State child = new State();
+                        child.setFather(state);
+                        child.getDepth(state);
+                        child.move_person_to_start(person);
+                        children.add(child);
+                }
+            }
             for (String first_person: people_at_finish.keySet())
             {
                 for (String second_person: people_at_finish.keySet())
                 {
                     //we will check all possible transfers by pair, we create a child, set all his characteristics and then append to children list
-                    if(move_to_end(people_at_finish.get(first_person), people_at_finish.get(second_person)))
+                    if(first_person != second_person && move_to_start_by_pair(people_at_finish.get(first_person), people_at_finish.get(second_person)))
                     {
                         State child = new State();
                         child.setFather(state);
                         child.getDepth(state);
+                        child.move_person_to_start(first_person);
+                        child.move_person_to_start(second_person);
                         children.add(child);
                     }
                 }
@@ -128,32 +155,40 @@ public class State implements Comparable<State> {
         return children;
     }
 
-    //moves people and the torch to the end
-    private boolean move_to_end(Integer person_one_time, Integer person_two_time)
+
+    //moves one person and the torch to the end, this function only operates as a checker, function move_person_to_end(person) implements the transfer
+    private boolean move_to_end(Integer person_time)
     {
         if(torch_position == 1)
         {
             return false;
         }
-        if(movement <= 0)
-        {
-            return false;
-        }
-        if(person_one_time + person_two_time > available_time)
+        if(person_time > available_time)
         {
             return false;
         }
         return true;
     }
 
-    //moves people and the torch to the start
-    private boolean move_to_start(Integer person_one_time, Integer person_two_time)
+    //moves person and the torch to the start, this function only operates as a checker, function move_person_to_start(person) implements the transfer
+    private boolean move_to_start(Integer person_time)
     {
         if(torch_position == 0)
         {
             return false;
         }
-        if(movement <= 0)
+        if(person_time > available_time)
+        {
+            return false;
+        }
+        return true;
+    }
+
+
+    //moves a pair of people and the torch to the end, this function only operates as a checker, function move_person_to_end(person) implements the transfer
+    private boolean move_to_end_by_pair(Integer person_one_time, Integer person_two_time)
+    {
+        if(torch_position == 1)
         {
             return false;
         }
@@ -164,7 +199,37 @@ public class State implements Comparable<State> {
         return true;
     }
 
-    
+    //moves a pair of people and the torch to the start, this function only operates as a checker, function move_person_to_start(person) implements the transfer
+    private boolean move_to_start_by_pair(Integer person_one_time, Integer person_two_time)
+    {
+        if(torch_position == 0)
+        {
+            return false;
+        }
+        if(person_one_time + person_two_time > available_time)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    //this function actually impliments the transfer of one person and the torch to the end
+    private void move_person_to_end(String person)
+    {
+        Integer person_time = people_at_start.get(person);
+        people_at_finish.put(person, person_time);
+        people_at_start.remove(person);
+        torch_position = 1;
+    }    
+
+    //this function actually impliments the transfer of one person and the torch to the start
+    private void move_person_to_start(String person)
+    {
+        Integer person_time = people_at_finish.get(person);
+        people_at_start.put(person, person_time);
+        people_at_start.remove(person);
+        torch_position = 0;
+    }
 
     //get the depth of the state
     private void getDepth(State current_state)

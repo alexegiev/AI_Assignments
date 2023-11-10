@@ -23,7 +23,7 @@ public class Searcher
         //while the frontier is not empty
         while(this.frontier.size() > 0)
         {
-            ArrayList<Integer> cost = null; // list for costs
+            ArrayList<Integer> cost = new ArrayList<Integer>(); // list for costs
             for(State state: frontier)
             {
                 cost.add(state.getF()); //we get the f cost of every state in the frontier
