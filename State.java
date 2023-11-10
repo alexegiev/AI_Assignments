@@ -90,11 +90,18 @@ public class State implements Comparable<State> {
 
     public ArrayList<State> getChildren(int heuristic)
     {
+        if(torch_position == 0){
+            int range = people_at_start.size() +1;
+            for(int i=1;i<=range;i++){
+
+            }
+
+        }
         return null;
     }
 
     //moves people and the torch to the end
-    private boolean move_to_end(String person1)
+    private boolean move_to_end()
     {
         if(torch_position == 1)
         {
@@ -108,7 +115,7 @@ public class State implements Comparable<State> {
     }
 
     //moves people and the torch to the start
-    private boolean move_to_start(String person1)
+    private boolean move_to_start()
     {
         if(torch_position == 0)
         {
@@ -121,11 +128,7 @@ public class State implements Comparable<State> {
         return true;
     }
 
-    //moves ba at the beginning one person and the torch
-    private void move_at_beginning()
-    {
-
-    }
+    
 
     //get the depth of the state
     private void getDepth(State current_state)
