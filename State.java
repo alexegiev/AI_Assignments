@@ -85,7 +85,15 @@ public class State implements Comparable<State> {
         this.f = this.g + this.h;
     }
 
-    public void print() {}
+    public void print() {
+        System.out.println("People at start: " + people_at_start);
+        System.out.println("People at finish: " + people_at_finish);
+        System.out.println("Torch position: " + torch_position);
+        System.out.println("Available time: " + available_time);
+        System.out.println("Heuristic score (h): " + h);
+        System.out.println("Cost to reach this node from the initial node (g): " + g);
+        System.out.println("Heuristic score + Cost to reach this node (f): " + f);
+    }
 
     public ArrayList<State> getChildren(State state)
     {
