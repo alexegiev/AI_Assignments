@@ -30,6 +30,15 @@ public class State implements Comparable<State> {
         this.available_time = available_time;
     }
 
+    public int getAvailable_time()
+    {
+        return available_time;
+    }
+
+    public void setAvailable_time(int time)
+    {
+        available_time = time;
+    }
     public int getF()
     {
         return this.f;
@@ -82,6 +91,7 @@ public class State implements Comparable<State> {
 
     public void evaluate()
     {
+        count_people_at_start();
         this.f = this.g + this.h;
     }
 
@@ -109,6 +119,7 @@ public class State implements Comparable<State> {
                         child.setFather(state);
                         child.getDepth(state);
                         child.move_person_to_end(person);
+                        child.available_time -= people_at_start.get(person);
                         children.add(child);
                 }
             }
@@ -124,6 +135,18 @@ public class State implements Comparable<State> {
                         child.getDepth(state);
                         child.move_person_to_end(first_person);
                         child.move_person_to_end(second_person);
+                        int time_person1 = people_at_start.get(first_person);
+                        int time_person2 = people_at_start.get(second_person);
+                        int max_time;
+                        if(time_person1 >= time_person2)
+                        {
+                            max_time = time_person1;
+                        }
+                        else
+                        {
+                            max_time = time_person2;
+                        }
+                        child.available_time -= max_time;
                         children.add(child);
                     }
                 }
@@ -136,11 +159,12 @@ public class State implements Comparable<State> {
             {
                 if (move_to_start(people_at_finish.get(person)))
                 {
-                        State child = new State();
-                        child.setFather(state);
-                        child.getDepth(state);
-                        child.move_person_to_start(person);
-                        children.add(child);
+                    State child = new State();
+                    child.setFather(state);
+                    child.getDepth(state);
+                    child.move_person_to_start(person);
+                    child.available_time -= people_at_finish.get(person);
+                    children.add(child);
                 }
             }
             for (String first_person: people_at_finish.keySet())
@@ -155,6 +179,19 @@ public class State implements Comparable<State> {
                         child.getDepth(state);
                         child.move_person_to_start(first_person);
                         child.move_person_to_start(second_person);
+                        int time_person1 = people_at_finish.get(first_person);
+                        int time_person2 = people_at_finish.get(second_person);
+                        int max_time;
+                        if(time_person1 >= time_person2)
+                        {
+                            max_time = time_person1;
+                        }
+                        else
+                        {
+                            max_time = time_person2;
+                        }
+                        child.available_time -= max_time;
+                        children.add(child);
                         children.add(child);
                     }
                 }
@@ -171,10 +208,6 @@ public class State implements Comparable<State> {
         {
             return false;
         }
-        if(person_time > available_time)
-        {
-            return false;
-        }
         return true;
     }
 
@@ -182,10 +215,6 @@ public class State implements Comparable<State> {
     private boolean move_to_start(Integer person_time)
     {
         if(torch_position == 0)
-        {
-            return false;
-        }
-        if(person_time > available_time)
         {
             return false;
         }
@@ -269,12 +298,6 @@ public class State implements Comparable<State> {
             return false;
         }
     }
-
-    @Override
-    public boolean equals(Object obj) {return true;}
-
-    @Override
-    public int hashCode() {return 0;}
 
     @Override
     public int compareTo(State s)

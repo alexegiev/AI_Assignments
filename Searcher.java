@@ -30,12 +30,21 @@ public class Searcher
             }
             //we need to find the minimum cost
             int min_cost = 0;
+            boolean found = false;
             for(int i: cost)
             {
-                if(i <= min_cost)
+                if(i <= min_cost && frontier.get(i).getAvailable_time() >= 0)    //we find the minimu cost from the states that also have positive value in available time
                 {
                     min_cost = i;
+                    found = true;
+                    System.out.println("bla");
                 }
+            }
+            if(found = false)
+            {
+                State false_state = new State();
+                false_state.setAvailable_time(-1);
+                return false_state;
             }
             int index = cost.indexOf(min_cost); //we keep the index with the minimum cost
             State state = frontier.remove(index);
