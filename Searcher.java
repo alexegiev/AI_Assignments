@@ -13,13 +13,18 @@ public class Searcher
 
     State a_Star(State initialState)
     {
+        System.out.println("---------");
+        initialState.print();
+        System.out.println("---------");
         if (initialState.isFinal())
         {
             return initialState;
         }
+
         State state_toReturn = new State();
         //put initial state in the frontier
         this.frontier.add(initialState);
+        System.out.println(this.frontier.get(0));
         //while the frontier is not empty
         while(this.frontier.size() > 0)
         {
@@ -47,7 +52,6 @@ public class Searcher
             }
             else
             {
-                System.out.println("BlaBla");
                 int index = cost.indexOf(min_cost); //we keep the index with the minimum cost
                 State state = frontier.remove(index);
                 //check if state is final, if it is, return it, else append it to closed set
@@ -62,6 +66,9 @@ public class Searcher
                     ArrayList<State> children = state.getChildren(state);    //find all children of the state with the minimum cost
                     for (State child: children)
                     {
+                        System.out.println("--------Childeer--------");
+                        child.print();
+                        System.out.println("--------Childeer--------");
                         //if child already in the closed set and above the state
                         //we put it under the state
                         if(closedSet.contains(child) && (state.getG() < child.getG()))
@@ -85,6 +92,7 @@ public class Searcher
                 }
             }
         }
+        state_toReturn.print();
         return state_toReturn;
     }
 }
