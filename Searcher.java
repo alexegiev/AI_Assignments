@@ -31,15 +31,15 @@ public class Searcher
             //we need to find the minimum cost
             int min_cost = 0;
             boolean found = false;
-            for(int i: cost)
+            for (int i = 0; i < cost.size(); i++)
             {
-                if(i <= min_cost && frontier.get(i).getAvailable_time() >= 0)    //we find the minimu cost from the states that also have positive value in available time
+                if (cost.get(i) <= min_cost && frontier.get(i).getAvailable_time() >= 0) //we find the minimu cost from the states that also have positive value in available time
                 {
                     min_cost = i;
                     found = true;
                 }
             }
-            if(found = false)
+            if(found == false)
             {
                 State false_state = new State();
                 false_state.setAvailable_time(-1);
@@ -62,25 +62,29 @@ public class Searcher
                     ArrayList<State> children = state.getChildren(state);    //find all children of the state with the minimum cost
                     for (State child: children)
                     {
-                        //if child already in the closed set and above the state
-                        //we put it under the state
-                        if(closedSet.contains(child) && (state.getG() < child.getG()))
-                        {
-                            child.setG(state.getG());
-                            child.setFather(state);
-                        }
-                        //if the child is in the frontier and above the state
-                        //we put it under the state
-                        else if(frontier.contains(child) && (state.getG() < child.getG()))
-                        {
-                            child.setG(state.getG());
-                            child.setFather(state);
-                        }
-                        else
-                        {
+                        // Check if the child is already in the closed set or the frontier
+                        if(!closedSet.contains(child) && !frontier.contains(child)){
+                            // if not , add it to the frontier and update its information
                             frontier.add(child);
                             child.setG(state.getG());
+                            child.setFather(state);
                         }
+                        else if(frontier.contains(child) && (state.getG() < child.getG()))
+                        {
+                            // if the child is in the frontier but the new path is better , update it
+                            child.setG(state.getG());
+                            child.setFather(state);
+                        }
+                        //if the child is in the closed set with a better path, update it
+                        else if(closedSet.contains(child) && (state.getG() < child.getG()))
+                        {
+                            child.setG(state.getG());
+                            child.setFather(state);
+                            // remove it from closedset and move  back to frontier
+                            closedSet.remove(child);
+                            frontier.add(child);
+                        }
+
                     }
                 }
             }

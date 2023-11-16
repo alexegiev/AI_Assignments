@@ -114,7 +114,7 @@ public class State implements Comparable<State> {
             {
                 if(move_to_end(people_at_start.get(person)))
                 {
-                        State child = new State();
+                        State child = new State(new HashMap<>(state.people_at_start), state.available_time);
                         child.setFather(state);
                         child.getDepth(state);
                         child.move_person_to_end(person);
@@ -129,7 +129,7 @@ public class State implements Comparable<State> {
                     //we will check all possible transfers by pair, we create a child, set all his characteristics and then append to children list
                     if(first_person != second_person && move_to_end_by_pair(people_at_start.get(first_person), people_at_start.get(second_person)))
                     {
-                        State child = new State();
+                        State child = new State(new HashMap<>(state.people_at_start), state.available_time);
                         child.setFather(state);
                         child.getDepth(state);
                         child.move_person_to_end(first_person);
@@ -158,7 +158,7 @@ public class State implements Comparable<State> {
             {
                 if (move_to_start(people_at_finish.get(person)))
                 {
-                    State child = new State();
+                    State child = new State(new HashMap<>(state.people_at_start), state.available_time);
                     child.setFather(state);
                     child.getDepth(state);
                     child.move_person_to_start(person);
@@ -173,7 +173,7 @@ public class State implements Comparable<State> {
                     //we will check all possible transfers by pair, we create a child, set all his characteristics and then append to children list
                     if(first_person != second_person && move_to_start_by_pair(people_at_finish.get(first_person), people_at_finish.get(second_person)))
                     {
-                        State child = new State();
+                        State child = new State(new HashMap<>(state.people_at_start), state.available_time);
                         child.setFather(state);
                         child.getDepth(state);
                         child.move_person_to_start(first_person);
@@ -190,7 +190,6 @@ public class State implements Comparable<State> {
                             max_time = time_person2;
                         }
                         child.available_time -= max_time;
-                        children.add(child);
                         children.add(child);
                     }
                 }
@@ -263,7 +262,7 @@ public class State implements Comparable<State> {
     {
         Integer person_time = people_at_finish.get(person);
         people_at_start.put(person, person_time);
-        people_at_start.remove(person);
+        people_at_finish.remove(person);
         torch_position = 0;
     }
 
