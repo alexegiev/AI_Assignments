@@ -72,8 +72,8 @@ public class Bridge_Crossing
             people_time.put("Aunty", 12);
             available_time = 30;
         }
-    
-        State initialState = new State(people_time, available_time);
+        HashMap<String, Integer> people_time_finish = new HashMap<String, Integer>();
+        State initialState = new State(people_time, people_time_finish, available_time);
         Searcher searcher = new Searcher();
         long start = System.currentTimeMillis();
         State result = searcher.a_Star(initialState);

@@ -11,11 +11,12 @@ public class Searcher
         this.closedSet = new HashSet<>();
     }
 
-    State a_Star(State initialState)
+    State a_Star(State startState)
     {
-        System.out.println("---------");
-        initialState.print();
-        System.out.println("---------");
+        State initialState = startState;
+        // System.out.println("---------start of AStar---------");
+        // initialState.print();
+        // System.out.println("---------start of AStar---------");
         if (initialState.isFinal())
         {
             return initialState;
@@ -24,7 +25,6 @@ public class Searcher
         State state_toReturn = new State();
         //put initial state in the frontier
         this.frontier.add(initialState);
-        System.out.println(this.frontier.get(0));
         //while the frontier is not empty
         while(this.frontier.size() > 0)
         {
@@ -59,16 +59,15 @@ public class Searcher
                 {
                     state_toReturn = state;
                     found = true;
-                    state.print();
                 }
                 if(!found){
                     closedSet.add(state);
                     ArrayList<State> children = state.getChildren(state);    //find all children of the state with the minimum cost
                     for (State child: children)
                     {
-                        System.out.println("--------Childeer--------");
-                        child.print();
-                        System.out.println("--------Childeer--------");
+                        // System.out.println("--------Children Start--------");
+                        // child.print();
+                        // System.out.println("--------Children End--------");
                         //if child already in the closed set and above the state
                         //we put it under the state
                         if(closedSet.contains(child) && (state.getG() < child.getG()))
@@ -92,7 +91,9 @@ public class Searcher
                 }
             }
         }
-        state_toReturn.print();
+        // System.out.println("---------End of AStar---------");
+        // state_toReturn.print();
+        // System.out.println("---------End of AStar---------");
         return state_toReturn;
     }
 }
