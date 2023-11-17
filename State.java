@@ -5,7 +5,7 @@ public class State implements Comparable<State> {
     private HashMap<String, Integer> people_at_start = new HashMap<String, Integer>();  //this Hashmap represents how many people are at the start
     private HashMap<String, Integer> people_at_finish = new HashMap<String, Integer>(); //this Hashmap represents how many people are at the end
     private static int torch_position = 0;                                     // position of torch in binary value. 0 at beginning, 1 at the end
-    private int available_time;                                     // the available time to pass the bridge
+    private static int available_time = 0;                                     // the available time to pass the bridge
     private State father = null;
     private int f;      //f: heuristic score
     private int h;      //h: cost of reaching the goal from current node
@@ -17,7 +17,6 @@ public class State implements Comparable<State> {
         this.h = 0;
         this.g = 0;
         this.father = null;
-        this.available_time = 0;
     }
 
     State(HashMap<String, Integer> people_at_start, int available_time)
@@ -27,6 +26,12 @@ public class State implements Comparable<State> {
         this.g = 0;
         this.people_at_start = people_at_start;
         this.available_time = available_time;
+        for (Map.Entry<String, Integer> printable :
+             people_at_start.entrySet()) {
+ 
+            // Printing all elements of a Map
+            System.out.println(printable.getKey() + " = "  + printable.getValue());
+             }
     }
 
     public int getAvailable_time()
