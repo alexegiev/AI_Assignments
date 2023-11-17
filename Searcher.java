@@ -30,7 +30,6 @@ public class Searcher
             }
 
             //we need to find the minimum cost
-<<<<<<< HEAD
             int min_cost = 0;
             boolean found = false;
             for (int i = 0; i < cost.size(); i++)
@@ -63,6 +62,8 @@ public class Searcher
             ArrayList<State> children = state.getChildren(state);    //find all children of the state with the minimum cost
             for (State child: children)
             {
+                child.evaluate(child);
+                //child.print();
                 //if child already in the closed set and above the state
                 //we put it under the state
                 if(closedSet.contains(child) && (state.getG() < child.getG()))
