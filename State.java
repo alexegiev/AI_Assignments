@@ -24,6 +24,7 @@ public class State implements Comparable<State> {
         this.people_at_start = people_at_start;
         this.people_at_finish = people_at_finish;
         this.available_time = available_time;
+        
     }
 
     public int getAvailable_time()
@@ -114,54 +115,7 @@ public class State implements Comparable<State> {
             {   
                 if(move_to_end(state, iterable_state.getKey())) //check if transfer is possible
                 {
-
-                        State child = new State(new HashMap<>(state.people_at_start), state.available_time);
-                        child.setFather(state);
-                        child.getDepth(state);
-                        child.move_person_to_end(person);
-                        child.available_time -= people_at_start.get(person);
-                        children.add(child);
-                }
-            }
-            for (String first_person: people_at_start.keySet())
-            {
-                for (String second_person: people_at_start.keySet())
-                {
-                    //we will check all possible transfers by pair, we create a child, set all his characteristics and then append to children list
-                    if(first_person != second_person && move_to_end_by_pair(people_at_start.get(first_person), people_at_start.get(second_person)))
-                    {
-                        State child = new State(new HashMap<>(state.people_at_start), state.available_time);
-                        child.setFather(state);
-                        child.getDepth(state);
-                        child.move_person_to_end(first_person);
-                        child.move_person_to_end(second_person);
-                        int time_person1 = people_at_start.get(first_person);
-                        int time_person2 = people_at_start.get(second_person);
-                        int max_time;
-                        if(time_person1 >= time_person2)
-                        {
-                            max_time = time_person1;
-                        }
-                        else
-                        {
-                            max_time = time_person2;
-                        }
-                        child.available_time -= max_time;
-                        children.add(child);
-                    }
-                }
-            }
-        }
-        else if (torch_position == 1)   //checking if torch is at the end
-        {
-            //the game allows a SINGLE person with the torch to cross the bridge, so we will create a child with the state of one person only
-            for (String person: people_at_finish.keySet())
-            {
-                if (move_to_start(people_at_finish.get(person)))
-                {
-                    State child = new State(new HashMap<>(state.people_at_start), state.available_time);
-
-                       //first make a copy of state that we will change
+                    State child = new State();   //first make a copy of state that we will change
                     child.people_at_start.putAll(iterator_people_at_start);
                     child.available_time = state.available_time;
                     String person_name = iterable_state.getKey();
@@ -170,7 +124,6 @@ public class State implements Comparable<State> {
                     child.available_time -= person_time;
                     child.people_at_start.remove(person_name);
                     child.torch_position = 1;
-
                     child.setFather(state);
                     child.evaluate(child);
                     child.print();
@@ -186,14 +139,6 @@ public class State implements Comparable<State> {
                 {
                     if(!(iterable_state_one.getKey() == iterable_state_two.getKey()) && move_to_end_by_pair(state, iterable_state_one.getKey(), iterable_state_one.getKey())) // check if transfer is possible
                     {
-
-                        State child = new State(new HashMap<>(state.people_at_start), state.available_time);
-                        child.setFather(state);
-                        child.getDepth(state);
-                        int time_person1 = child.people_at_start.get(first_person);
-                        int time_person2 = child.people_at_start.get(second_person);
-                        int max_time;
-                        if(time_person1 >= time_person2)
                         State child = new State();   //first make a copy of state that we will change
                         child.people_at_start.putAll(iterator_people_at_start_one);
                         child.available_time = state.available_time;
@@ -204,7 +149,6 @@ public class State implements Comparable<State> {
                         child.people_at_finish.put(person_name_one, person_time_one);
                         child.people_at_finish.put(person_name_two, person_time_two);
                         if(person_time_one >= person_time_two)
-
                         {
                             child.available_time -= person_time_one;
                         }
@@ -212,20 +156,12 @@ public class State implements Comparable<State> {
                         {
                             child.available_time -= person_time_two;
                         }
-
-                        child.available_time -= max_time;
-                        child.move_person_to_end(child, first_person);
-                        child.move_person_to_end(child, second_person);
-                        transfer_limit = 0;
-                        child.evaluate();
-
                         child.people_at_start.remove(person_name_one);
                         child.people_at_start.remove(person_name_two);
                         child.torch_position = 1;
                         child.setFather(state);
                         child.evaluate(child);
-                        child.print();
-
+                        // child.print();
                         children.add(child);
                     }
                 }
@@ -362,15 +298,6 @@ public class State implements Comparable<State> {
     // }    
 
     //this function actually impliments the transfer of one person and the torch to the start
-
-    private void move_person_to_start(State state, String person)
-    {
-        Integer person_time = people_at_finish.get(person);
-        people_at_start.put(person, person_time);
-        people_at_finish.remove(person);
-        torch_position = 0;
-    }
-
     // private void move_person_to_start(State state, String person)
     // {
     //     String person_name = person;
@@ -378,7 +305,6 @@ public class State implements Comparable<State> {
     //     state.people_at_start.put(person_name, person_time);
     //     state.people_at_finish.remove(person_name);
     // }
-
 
     //get the depth of the state
     private void getDepth(State current_state)

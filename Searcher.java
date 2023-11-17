@@ -35,25 +35,21 @@ public class Searcher
             for (int i = 0; i < cost.size(); i++)
             {
                 if (cost.get(i) <= min_cost && frontier.get(i).getAvailable_time() >= 0) //we find the minimu cost from the states that also have positive value in available time
-=======
+
             int min_cost = cost.get(0);
             for(int i: cost)
             {
                 if(i <= min_cost)    //we find the minimu cost from the states that also have positive value in available time
->>>>>>> 05c08203a92e4ff0eee9e813508b401bc948137f
+
                 {
                     min_cost = i;
                 }
             }
-<<<<<<< HEAD
-            if(found == false)
-=======
 
             int index = cost.indexOf(min_cost); //we keep the index with the minimum cost
             State state = frontier.remove(index);
             //check if state is final, if it is, return it, else append it to closed set
             if(state.isFinal())
->>>>>>> 05c08203a92e4ff0eee9e813508b401bc948137f
             {
                 return state;
             }
@@ -64,6 +60,7 @@ public class Searcher
             {
                 child.evaluate(child);
                 //child.print();
+
                 //if child already in the closed set and above the state
                 //we put it under the state
                 if(closedSet.contains(child) && (state.getG() < child.getG()))
@@ -71,17 +68,12 @@ public class Searcher
                     child.setG(state.getG());
                     child.setFather(state);
                 }
-<<<<<<< HEAD
+
                 if(!found){
                     closedSet.add(state);
                     ArrayList<State> children = state.getChildren(state);    //find all children of the state with the minimum cost
                     for (State child: children)
                     {
-<<<<<<< HEAD
-                        // Check if the child is already in the closed set or the frontier
-                        if(!closedSet.contains(child) && !frontier.contains(child)){
-                            // if not , add it to the frontier and update its information
-=======
                         System.out.println("--------Childeer--------");
                         child.print();
                         System.out.println("--------Childeer--------");
@@ -101,7 +93,6 @@ public class Searcher
                         }
                         else
                         {
->>>>>>> 45b2c4fb9abfed462f96fd935047e31c66f5fec5
                             frontier.add(child);
                             child.setG(state.getG());
                             child.setFather(state);
@@ -123,19 +114,21 @@ public class Searcher
                         }
 
                     }
-=======
+
                 //if the child is in the frontier and above the state
                 //we put it under the state
                 else if(frontier.contains(child) && (state.getG() < child.getG()))
                 {
                     child.setG(state.getG());
                     child.setFather(state);
->>>>>>> 05c08203a92e4ff0eee9e813508b401bc948137f
+
                 }
                 else
+
+                if (!closedSet.contains(child) && !frontier.contains(child))
+
                 {
                     frontier.add(child);
-                    child.setG(state.getG());
                 }
             }        
         }
