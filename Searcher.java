@@ -53,24 +53,9 @@ public class Searcher
             {
                 child.evaluate(child);
                 //child.print();
-                //if child already in the closed set and above the state
-                //we put it under the state
-                if(closedSet.contains(child) && (state.getG() < child.getG()))
-                {
-                    child.setG(state.getG());
-                    child.setFather(state);
-                }
-                //if the child is in the frontier and above the state
-                //we put it under the state
-                else if(frontier.contains(child) && (state.getG() < child.getG()))
-                {
-                    child.setG(state.getG());
-                    child.setFather(state);
-                }
-                else
+                if (!closedSet.contains(child) && !frontier.contains(child))
                 {
                     frontier.add(child);
-                    child.setG(state.getG());
                 }
             }        
         }

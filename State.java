@@ -117,6 +117,7 @@ public class State implements Comparable<State> {
                 {
                     State child = new State();   //first make a copy of state that we will change
                     child.people_at_start.putAll(iterator_people_at_start);
+                    child.people_at_finish.putAll(state.people_at_finish);
                     child.available_time = state.available_time;
                     String person_name = iterable_state.getKey();
                     Integer person_time = iterable_state.getValue();
@@ -143,6 +144,7 @@ public class State implements Comparable<State> {
                     {
                         State child = new State();   //first make a copy of state that we will change
                         child.people_at_start.putAll(iterator_people_at_start_one);
+                        child.people_at_finish.putAll(state.people_at_finish);
                         child.available_time = state.available_time;
                         String person_name_one = iterable_state_one.getKey();
                         String person_name_two = iterable_state_two.getKey();
@@ -183,6 +185,7 @@ public class State implements Comparable<State> {
                 {
                     State child = new State();   //first make a copy of state that we will change
                     child.people_at_finish.putAll(iterator_people_at_finish);
+                    child.people_at_start.putAll(state.people_at_start);
                     child.available_time = state.available_time;
                     String person_name = iterable_state.getKey();
                     Integer person_time = iterable_state.getValue();
@@ -208,6 +211,7 @@ public class State implements Comparable<State> {
                     {
                         State child = new State();   //first make a copy of state that we will change
                         child.people_at_finish.putAll(iterator_people_at_finish_one);
+                        child.people_at_start.putAll(state.people_at_start);
                         child.available_time = state.available_time;
                         String person_name_one = iterable_state_one.getKey();
                         String person_name_two = iterable_state_two.getKey();
@@ -236,52 +240,6 @@ public class State implements Comparable<State> {
 
         return children;
     }
-
-
-    // //moves one person and the torch to the end, this function only operates as a checker, function move_person_to_end(person) implements the transfer
-    // private boolean move_to_end(State state, String person)
-    // {
-    //     if(state.torch_position == 1)
-    //     {
-    //         return false;
-    //     }
-    //     if (state.people_at_start.get(person) > state.available_time) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
-    // //moves person and the torch to the start, this function only operates as a checker, function move_person_to_start(person) implements the transfer
-    // private boolean move_to_start(State state, String person)
-    // {
-    //     if(state.torch_position == 0)
-    //     {
-    //         return false;
-    //     }
-    //     if (state.people_at_start.get(person) > state.available_time) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
-
-    //this function actually impliments the transfer of one person and the torch to the end
-    // private void move_person_to_end(State state, String person)
-    // {
-    //     String person_name = person;
-    //     Integer person_time = state.people_at_start.get(person_name);
-    //     state.people_at_finish.put(person_name, person_time);
-    //     state.people_at_start.remove(person_name);
-    // }    
-
-    //this function actually impliments the transfer of one person and the torch to the start
-    // private void move_person_to_start(State state, String person)
-    // {
-    //     String person_name = person;
-    //     Integer person_time = state.people_at_finish.get(person_name);
-    //     state.people_at_start.put(person_name, person_time);
-    //     state.people_at_finish.remove(person_name);
-    // }
 
     //get the depth of the state
     private void getDepth(State current_state)
