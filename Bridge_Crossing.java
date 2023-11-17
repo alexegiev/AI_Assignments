@@ -7,26 +7,26 @@ public class Bridge_Crossing
 
     public static void print_path(State final_state)
     {
-        // ArrayList<State> solution_path = new ArrayList<State>();
-        // solution_path.add(final_state);
-        // State current_node = final_state;
-        // if(final_state.getAvailable_time()<0)
-        // {
-        //     System.out.println("Solution not found");
-        // }
-        // else
-        // {
-        //     while(current_node.getFather()!=null)
-        //     {
-        //         current_node = current_node.getFather();
-        //         solution_path.add(current_node);
-        //     }
-        //     System.out.println("This is the transfer order:");
-        //     for(int i = solution_path.size() - 1; i >= 0; i--)
-        //     {
-        //         solution_path.get(i).print();
-        //     }
-        // }        
+        ArrayList<State> solution_path = new ArrayList<State>();
+        solution_path.add(final_state);
+        State current_node = final_state;
+        if(final_state.getAvailable_time()<0)
+        {
+            System.out.println("Solution not found");
+        }
+        else
+        {
+            while(current_node.getFather()!=null)
+            {
+                current_node = current_node.getFather();
+                solution_path.add(current_node);
+            }
+            System.out.println("This is the transfer order:");
+            for(int i = solution_path.size() - 1; i >= 0; i--)
+            {
+                solution_path.get(i).print();
+            }
+        }        
     }
     public static void main(String[] args) {
 
