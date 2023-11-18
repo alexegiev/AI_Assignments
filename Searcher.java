@@ -4,13 +4,11 @@ public class Searcher
 {
     private ArrayList<State> frontier;
     private HashSet<State> closedSet;
-    private int maxDepth;
 
     Searcher()
     {
         this.frontier = new ArrayList<>();
         this.closedSet = new HashSet<>();
-        this.maxDepth = 10;
     }
 
     State a_Star(State initialState)
@@ -18,12 +16,6 @@ public class Searcher
         if (initialState.isFinal())
         {
             return initialState;
-        }
-
-        if(initialState.getDepth(initialState) > this.maxDepth)
-        {
-            System.out.println("Reached max depth, quitting....");
-            return null;
         }
 
         //put initial state in the frontier
