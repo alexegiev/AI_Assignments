@@ -24,7 +24,6 @@ public class State implements Comparable<State> {
         this.people_at_start = people_at_start;
         this.people_at_finish = people_at_finish;
         this.available_time = available_time;
-        
     }
 
     public int getAvailable_time()
@@ -110,13 +109,15 @@ public class State implements Comparable<State> {
         //checks if to torch is at start
         if(state.torch_position == 0)
         {
-            HashMap<String, Integer> iterator_people_at_start = new HashMap<>(state.people_at_start);   //creating an iterator hashmap
+            HashMap<String, Integer> iterator_people_at_start = new HashMap<>();   //creating an iterator hashmap
+            iterator_people_at_start.putAll(state.people_at_start);
             for (Map.Entry<String, Integer> iterable_state : iterator_people_at_start.entrySet())
             {   
-                if(move_to_end(state, iterable_state.getKey())) //check if transfer is possible
+                if(iterable_state.getValue() <= state.available_time) //check if transfer is possible
                 {
                     State child = new State();   //first make a copy of state that we will change
                     child.people_at_start.putAll(iterator_people_at_start);
+                    child.people_at_finish.putAll(state.people_at_finish);
                     child.available_time = state.available_time;
                     String person_name = iterable_state.getKey();
                     Integer person_time = iterable_state.getValue();
@@ -126,21 +127,24 @@ public class State implements Comparable<State> {
                     child.torch_position = 1;
                     child.setFather(state);
                     child.evaluate(child);
-                    child.print();
+                    // child.print();
                     children.add(child);                        //add child to ArrayList children
                 }
             }
 
-            HashMap<String, Integer> iterator_people_at_start_one = new HashMap<>(state.people_at_start);   //creating first iterator hashmap
-            HashMap<String, Integer> iterator_people_at_start_two = new HashMap<>(state.people_at_start);   //creating second iterator hashmap
+            HashMap<String, Integer> iterator_people_at_start_one = new HashMap<>();   //creating first iterator hashmap
+            HashMap<String, Integer> iterator_people_at_start_two = new HashMap<>();   //creating second iterator hashmap
+            iterator_people_at_start_one.putAll(state.people_at_start);
+            iterator_people_at_start_two.putAll(state.people_at_start);
             for (Map.Entry<String, Integer> iterable_state_one : iterator_people_at_start_one.entrySet())
             {
                 for (Map.Entry<String, Integer> iterable_state_two : iterator_people_at_start_two.entrySet())
                 {
-                    if(!(iterable_state_one.getKey() == iterable_state_two.getKey()) && move_to_end_by_pair(state, iterable_state_one.getKey(), iterable_state_one.getKey())) // check if transfer is possible
+                    if(!(iterable_state_one.getKey() == iterable_state_two.getKey()) && iterable_state_one.getValue() + iterable_state_two.getValue() <= state.available_time) // check if transfer is possible
                     {
                         State child = new State();   //first make a copy of state that we will change
                         child.people_at_start.putAll(iterator_people_at_start_one);
+                        child.people_at_finish.putAll(state.people_at_finish);
                         child.available_time = state.available_time;
                         String person_name_one = iterable_state_one.getKey();
                         String person_name_two = iterable_state_two.getKey();
@@ -173,13 +177,15 @@ public class State implements Comparable<State> {
         //checks if to torch is at end
         if(state.torch_position == 1)
         {
-            HashMap<String, Integer> iterator_people_at_finish = new HashMap<>(state.people_at_finish);   //creating an iterator hashmap
+            HashMap<String, Integer> iterator_people_at_finish = new HashMap<>();   //creating an iterator hashmap
+            iterator_people_at_finish.putAll(state.people_at_finish);
             for (Map.Entry<String, Integer> iterable_state : iterator_people_at_finish.entrySet())
             {   
-                if(move_to_start(state, iterable_state.getKey())) //check if transfer is possible
+                if(iterable_state.getValue() <= state.available_time) //check if transfer is possible
                 {
                     State child = new State();   //first make a copy of state that we will change
                     child.people_at_finish.putAll(iterator_people_at_finish);
+                    child.people_at_start.putAll(state.people_at_start);
                     child.available_time = state.available_time;
                     String person_name = iterable_state.getKey();
                     Integer person_time = iterable_state.getValue();
@@ -193,16 +199,19 @@ public class State implements Comparable<State> {
                 }
             }
 
-            HashMap<String, Integer> iterator_people_at_finish_one = new HashMap<>(state.people_at_finish);   //creating first iterator hashmap
-            HashMap<String, Integer> iterator_people_at_finish_two = new HashMap<>(state.people_at_finish);   //creating second iterator hashmap
+            HashMap<String, Integer> iterator_people_at_finish_one = new HashMap<>();   //creating first iterator hashmap
+            HashMap<String, Integer> iterator_people_at_finish_two = new HashMap<>();   //creating second iterator hashmap
+            iterator_people_at_finish_one.putAll(state.people_at_finish);
+            iterator_people_at_finish_one.putAll(state.people_at_finish);
             for (Map.Entry<String, Integer> iterable_state_one : iterator_people_at_finish_one.entrySet())
             {
                 for (Map.Entry<String, Integer> iterable_state_two : iterator_people_at_finish_two.entrySet())
                 {
-                    if(!(iterable_state_one.getKey() == iterable_state_two.getKey()) && move_to_start_by_pair(state, iterable_state_one.getKey(), iterable_state_one.getKey())) // check if transfer is possible
+                    if(!(iterable_state_one.getKey() == iterable_state_two.getKey()) && iterable_state_one.getValue() + iterable_state_two.getValue() <= state.available_time) // check if transfer is possible
                     {
                         State child = new State();   //first make a copy of state that we will change
                         child.people_at_finish.putAll(iterator_people_at_finish_one);
+                        child.people_at_start.putAll(state.people_at_start);
                         child.available_time = state.available_time;
                         String person_name_one = iterable_state_one.getKey();
                         String person_name_two = iterable_state_two.getKey();
@@ -231,80 +240,6 @@ public class State implements Comparable<State> {
 
         return children;
     }
-
-
-    //moves one person and the torch to the end, this function only operates as a checker, function move_person_to_end(person) implements the transfer
-    private boolean move_to_end(State state, String person)
-    {
-        if(state.torch_position == 1)
-        {
-            return false;
-        }
-        if (state.people_at_start.get(person) > state.available_time) {
-            return false;
-        }
-        return true;
-    }
-
-    //moves person and the torch to the start, this function only operates as a checker, function move_person_to_start(person) implements the transfer
-    private boolean move_to_start(State state, String person)
-    {
-        if(state.torch_position == 0)
-        {
-            return false;
-        }
-        if (state.people_at_start.get(person) > state.available_time) {
-            return false;
-        }
-        return true;
-    }
-
-
-    //moves a pair of people and the torch to the end, this function only operates as a checker, function move_person_to_end(person) implements the transfer
-    private boolean move_to_end_by_pair(State state, String person_one, String person_two)
-    {
-        if(state.torch_position == 1)
-        {
-            return false;
-        }
-        if(state.people_at_start.get(person_one) + state.people_at_start.get(person_two) > state.available_time)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    //moves a pair of people and the torch to the start, this function only operates as a checker, function move_person_to_start(person) implements the transfer
-    private boolean move_to_start_by_pair(State state, String person_one, String person_two)
-    {
-        if(state.torch_position == 0)
-        {
-            return false;
-        }
-        if(state.people_at_start.get(person_one) + state.people_at_start.get(person_two) > state.available_time)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    //this function actually impliments the transfer of one person and the torch to the end
-    // private void move_person_to_end(State state, String person)
-    // {
-    //     String person_name = person;
-    //     Integer person_time = state.people_at_start.get(person_name);
-    //     state.people_at_finish.put(person_name, person_time);
-    //     state.people_at_start.remove(person_name);
-    // }    
-
-    //this function actually impliments the transfer of one person and the torch to the start
-    // private void move_person_to_start(State state, String person)
-    // {
-    //     String person_name = person;
-    //     Integer person_time = state.people_at_finish.get(person_name);
-    //     state.people_at_start.put(person_name, person_time);
-    //     state.people_at_finish.remove(person_name);
-    // }
 
     //get the depth of the state
     private void getDepth(State current_state)
