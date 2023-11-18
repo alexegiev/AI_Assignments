@@ -53,7 +53,7 @@ public class Searcher
             {
                 child.evaluate(child);
                 //child.print();
-                if (!closedSet.contains(child) && !frontier.contains(child))
+                if (!closedSet.contains(child) && !frontier.contains(child) && worth_exploring(child))
                 {
                     frontier.add(child);
                 }
@@ -62,5 +62,12 @@ public class Searcher
         State state_nofound = new State();
         state_nofound.setAvailable_time(-1);
         return state_nofound;
+    }
+    // pruning strategy attempt 
+    private boolean worth_exploring(State state){
+        // add the requirements for a state to be worth exploring
+        // return true if the state is worth it , else false 
+    
+
     }
 }
