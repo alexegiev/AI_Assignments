@@ -4,11 +4,13 @@ public class Searcher
 {
     private ArrayList<State> frontier;
     private HashSet<State> closedSet;
+    private int maxDepth;
 
     Searcher()
     {
         this.frontier = new ArrayList<>();
         this.closedSet = new HashSet<>();
+        this.maxDepth = 10;
     }
 
     State a_Star(State initialState)
@@ -18,11 +20,18 @@ public class Searcher
             return initialState;
         }
 
+        if(initialState.getDepth(initialState) > this.maxDepth)
+        {
+            System.out.println("Reached max depth, quitting....");
+            return null;
+        }
+
         //put initial state in the frontier
         this.frontier.add(initialState);
         //while the frontier is not empty
         while(this.frontier.size() > 0)
         {
+              
             ArrayList<Integer> cost = new ArrayList<Integer>(); // list for costs
             for(State state: frontier)
             {
@@ -53,7 +62,7 @@ public class Searcher
             {
                 child.evaluate(child);
                 //child.print();
-                if (!closedSet.contains(child) && !frontier.contains(child) && worth_exploring(child))
+                if (!closedSet.contains(child) && !frontier.contains(child))
                 {
                     frontier.add(child);
                 }
@@ -62,12 +71,5 @@ public class Searcher
         State state_nofound = new State();
         state_nofound.setAvailable_time(-1);
         return state_nofound;
-    }
-    // pruning strategy attempt 
-    private boolean worth_exploring(State state){
-        // add the requirements for a state to be worth exploring
-        // return true if the state is worth it , else false 
-    
-
     }
 }
