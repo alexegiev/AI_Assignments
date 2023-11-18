@@ -140,7 +140,7 @@ public class State implements Comparable<State> {
             {
                 for (Map.Entry<String, Integer> iterable_state_two : iterator_people_at_start_two.entrySet())
                 {
-                    if(!(iterable_state_one.getKey() == iterable_state_two.getKey()) && iterable_state_one.getValue() + iterable_state_two.getValue() <= state.available_time) // check if transfer is possible
+                    if(!(iterable_state_one.getKey() == iterable_state_two.getKey()) && iterable_state_one.getValue() <= state.available_time && iterable_state_two.getValue() <= state.available_time) // check if transfer is possible
                     {
                         State child = new State();   //first make a copy of state that we will change
                         child.people_at_start.putAll(iterator_people_at_start_one);
@@ -207,7 +207,7 @@ public class State implements Comparable<State> {
             {
                 for (Map.Entry<String, Integer> iterable_state_two : iterator_people_at_finish_two.entrySet())
                 {
-                    if(!(iterable_state_one.getKey() == iterable_state_two.getKey()) && iterable_state_one.getValue() + iterable_state_two.getValue() <= state.available_time) // check if transfer is possible
+                    if(!(iterable_state_one.getKey() == iterable_state_two.getKey()) && iterable_state_one.getValue() <= state.available_time && iterable_state_two.getValue() <= state.available_time) // check if transfer is possible
                     {
                         State child = new State();   //first make a copy of state that we will change
                         child.people_at_finish.putAll(iterator_people_at_finish_one);
