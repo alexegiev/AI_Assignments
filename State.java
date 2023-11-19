@@ -127,7 +127,6 @@ public class State implements Comparable<State> {
                     child.torch_position = 1;
                     child.setFather(state);
                     child.evaluate(child);
-                    // child.print();
                     children.add(child);                        //add child to ArrayList children
                 }
             }
@@ -165,7 +164,6 @@ public class State implements Comparable<State> {
                         child.torch_position = 1;
                         child.setFather(state);
                         child.evaluate(child);
-                        // child.print();
                         children.add(child);
                     }
                 }

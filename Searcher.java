@@ -53,7 +53,6 @@ public class Searcher
             for (State child: children)
             {
                 child.evaluate(child);
-                //child.print();
                 if (!closedSet.contains(child) && !frontier.contains(child))
                 {
                     frontier.add(child);
