@@ -1,10 +1,28 @@
 import numpy as np
+
+class Stump:
+    def __init__(self):
+        self.polarity = 1
+        self.feature_index = None
+        self.threshold = None
+        self.alpha = None
+
+    def predict(self, X):
+        n_samples = X.shape[0]
+        X_column = X[:, self.feature_index]
+        predictions = np.ones(n_samples)
+        if self.polarity == 1:
+            predictions[X_column < self.threshold] = -1
+        else:
+            predictions[X_column > self.threshold] = -1
+
+        return predictions
+
 class AdaBoost:
     def __init__(self, n_estimators=5, learning_rate=1.0):
         self.n_estimators = n_estimators
         self.learning_rate = learning_rate
         self.models = []
-        self.alphas = []
 
     def fit(self, X, y):
         n_samples, n_features = X.shape
@@ -21,7 +39,6 @@ class AdaBoost:
                 for threshold in unique_values:
                     p = 1
                     prediction = np.ones(np.shape(y))
-
                     prediction[X[:, feature_i] < threshold] = -1
 
                     error = sum(weights[y != prediction])
@@ -43,30 +60,21 @@ class AdaBoost:
             self.models.append(stump)
 
     def predict(self, X):
-        n_samples = X.shape[0]
-        y_pred = np.zeros((n_samples, 1))
-
-        for stump in self.models:
-            predictions = stump.predict(X)
-            y_pred += stump.alpha * predictions
-
-        y_pred = np.sign(y_pred).flatten()
+        stump_preds = np.array([stump.alpha * stump.predict(X) for stump in self.models])
+        y_pred = np.sum(stump_preds, axis=0)
+        y_pred = np.sign(y_pred)
 
         return y_pred
-class Stump:
-    def __init__(self):
-        self.polarity = 1
-        self.feature_index = None
-        self.threshold = None
-        self.alpha = None
+    
+    def score(self, X, y):
+        y_pred = self.predict(X)
+        accuracy = (y_pred == y).mean()
+        return accuracy
+    
+    def get_params(self, deep=True):
+        return {"n_estimators": self.n_estimators, "learning_rate": self.learning_rate}
 
-    def predict(self, X):
-        n_samples = X.shape[0]
-        X_column = X[:, self.feature_index]
-        predictions = np.ones(n_samples)
-        if self.polarity == 1:
-            predictions[X_column < self.threshold] = -1
-        else:
-            predictions[X_column > self.threshold] = -1
-
-        return predictions
+    def set_params(self, **parameters):
+        for parameter, value in parameters.items():
+            setattr(self, parameter, value)
+        return self
