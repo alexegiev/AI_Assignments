@@ -37,14 +37,14 @@ word_index = {word: i for i, word in enumerate(vocab)}
 train_vectors = [[1 if word in sentence.split() else 0 for word in vocab] for sentence in train_sentences]
 test_vectors = [[1 if word in sentence.split() else 0 for word in vocab] for sentence in test_sentences]
 
-from sklearn.naive_bayes import MultinomialNB
+from bayes import NaiveBayes
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import learning_curve
 import matplotlib.pyplot as plt
 import numpy as np
 
 # Train and evaluate the Naive Bayes classifier
-nb = MultinomialNB()
+nb = NaiveBayes()
 nb.fit(train_vectors, train_labels)
 nb_predictions = nb.predict(test_vectors)
 print("Naive Bayes Accuracy: ", accuracy_score(test_labels, nb_predictions))
@@ -53,7 +53,7 @@ print("Naive Bayes Recall: ", recall_score(test_labels, nb_predictions))
 print("Naive Bayes F1 Score: ", f1_score(test_labels, nb_predictions))
 
 # Plot learning curves
-train_sizes, train_scores, test_scores = learning_curve(MultinomialNB(), train_vectors, train_labels, cv=5)
+train_sizes, train_scores, test_scores = learning_curve(NaiveBayes(), train_vectors, train_labels, cv=5)
 
 train_scores_mean = np.mean(train_scores, axis=1)
 test_scores_mean = np.mean(test_scores, axis=1)
