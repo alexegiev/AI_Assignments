@@ -40,7 +40,7 @@ train_vectors = vectorizer.transform(train_sentences).toarray()
 test_vectors = vectorizer.transform(test_sentences).toarray()
 
 # Train the AdaBoost classifier
-adaboost = AdaBoost(n_estimators=50, learning_rate=1.0)
+adaboost = AdaBoost(n_estimators=100, learning_rate=0.5)
 adaboost.fit(train_vectors, train_labels)
 
 # Make predictions on the test set
@@ -54,7 +54,7 @@ accuracy = correct_predictions / len(test_labels)
 
 print(f"Accuracy: {accuracy * 100:.2f}%")
 
-adb = AdaBoost(n_estimators=50, learning_rate=1.0)
+adb = AdaBoost(n_estimators=100, learning_rate=0.5)
 adb.fit(train_vectors, train_labels)
 adb_predictions = adb.predict(test_vectors)
 print("AdaBoost Accuracy: ", accuracy_score(test_labels, adb_predictions))
@@ -63,7 +63,7 @@ print("AdaBoost Recall: ", recall_score(test_labels, adb_predictions, average='m
 print("AdaBoost F1 Score: ", f1_score(test_labels, adb_predictions, average='micro'))
 
 # Plot learning curves
-train_sizes, train_scores, test_scores = learning_curve(AdaBoost(n_estimators=50, learning_rate=1.0), train_vectors, train_labels, cv=5)
+train_sizes, train_scores, test_scores = learning_curve(AdaBoost(n_estimators=100, learning_rate=0.5), train_vectors, train_labels, cv=5)
 
 train_scores_mean = np.mean(train_scores, axis=1)
 test_scores_mean = np.mean(test_scores, axis=1)

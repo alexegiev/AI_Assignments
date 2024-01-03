@@ -19,7 +19,7 @@ class Stump:
         return predictions
 
 class AdaBoost:
-    def __init__(self, n_estimators=5, learning_rate=1.0):
+    def __init__(self, n_estimators=100, learning_rate=0.5):
         self.n_estimators = n_estimators
         self.learning_rate = learning_rate
         self.models = []
