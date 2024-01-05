@@ -7,9 +7,8 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.model_selection import learning_curve
 import matplotlib.pyplot as plt
 
-
 # Load the IMDB dataset
-(train_data, train_labels), (test_data, test_labels) = imdb.load_data(num_words=10000)
+(train_data, train_labels), (test_data, test_labels) = imdb.load_data(num_words=1000)
 
 # Convert the list of words to sentences
 word_index = imdb.get_word_index()
@@ -40,7 +39,7 @@ train_vectors = vectorizer.transform(train_sentences).toarray()
 test_vectors = vectorizer.transform(test_sentences).toarray()
 
 # Train the AdaBoost classifier
-adaboost = AdaBoost(n_estimators=100, learning_rate=0.5)
+adaboost = AdaBoost(n_estimators=1000, learning_rate=0.01)
 adaboost.fit(train_vectors, train_labels)
 
 # Make predictions on the test set
@@ -54,17 +53,17 @@ accuracy = correct_predictions / len(test_labels)
 
 print(f"Accuracy: {accuracy * 100:.2f}%")
 
-adb = AdaBoost(n_estimators=100, learning_rate=0.5)
+adb = AdaBoost(n_estimators=1000, learning_rate=0.01)
 adb.fit(train_vectors, train_labels)
 adb_predictions = adb.predict(test_vectors)
 
 print("AdaBoost Accuracy: ", accuracy_score(test_labels, adb_predictions))
-print("AdaBoost Precision: ", precision_score(test_labels, adb_predictions, average='macro'))
-print("AdaBoost Recall: ", recall_score(test_labels, adb_predictions, average='macro'))
-print("AdaBoost F1 Score: ", f1_score(test_labels, adb_predictions, average='macro'))
+print("AdaBoost Precision: ", precision_score(test_labels, adb_predictions, average='macro', zero_division=1))
+print("AdaBoost Recall: ", recall_score(test_labels, adb_predictions, average='macro', zero_division=1))
+print("AdaBoost F1 Score: ", f1_score(test_labels, adb_predictions, average='macro', zero_division=1))
 
 # Plot learning curves
-train_sizes, train_scores, test_scores = learning_curve(AdaBoost(n_estimators=100, learning_rate=0.5), train_vectors, train_labels, cv=5)
+train_sizes, train_scores, test_scores = learning_curve(AdaBoost(n_estimators=1000, learning_rate=0.01), train_vectors, train_labels, cv=5)
 
 train_scores_mean = np.mean(train_scores, axis=1)
 test_scores_mean = np.mean(test_scores, axis=1)
