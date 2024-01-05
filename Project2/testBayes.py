@@ -14,9 +14,9 @@ train_sentences = [" ".join([reverse_word_index.get(i - 3, "?") for i in sentenc
 test_sentences = [" ".join([reverse_word_index.get(i - 3, "?") for i in sentence]) for sentence in test_data]
 
 # Define the hyperparameters
-n = 10
+n = 50
 m = 1000
-k = 10
+k = 50
 
 # Convert the reviews into a list of words
 train_words = [word for sentence in train_sentences for word in sentence.split()]
@@ -36,6 +36,15 @@ word_index = {word: i for i, word in enumerate(vocab)}
 # Convert the reviews into binary feature vectors
 train_vectors = [[1 if word in sentence.split() else 0 for word in vocab] for sentence in train_sentences]
 test_vectors = [[1 if word in sentence.split() else 0 for word in vocab] for sentence in test_sentences]
+
+# Create the CountVectorizer
+vectorizer = CountVectorizer(binary=True, max_features=m)
+
+# Fit the CountVectorizer to the training data and transform the training data
+train_vectors = vectorizer.fit_transform(train_sentences)
+
+# Transform the test data
+test_vectors = vectorizer.transform(test_sentences)
 
 from bayes import NaiveBayes
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
@@ -58,12 +67,14 @@ train_sizes, train_scores, test_scores = learning_curve(NaiveBayes(), train_vect
 train_scores_mean = np.mean(train_scores, axis=1)
 test_scores_mean = np.mean(test_scores, axis=1)
 
-plt.plot(train_sizes, train_scores_mean, label='Training score')
-plt.plot(train_sizes, test_scores_mean, label='Cross-validation score')
-plt.title('Learning Curves')
-plt.xlabel('Training examples')
-plt.ylabel('Score')
-plt.legend(loc='best')
+plt.figure()
+plt.title("Learning Curves (Naive Bayes)")
+plt.xlabel("Training examples")
+plt.ylabel("Score")
+plt.grid()
+plt.plot(train_sizes, train_scores_mean, 'o-', color="r", label="Training score")
+plt.plot(train_sizes, test_scores_mean, 'o-', color="g", label="Cross-validation score")
+plt.legend(loc="best")
 plt.show()
 
 # Predict labels for the test data
