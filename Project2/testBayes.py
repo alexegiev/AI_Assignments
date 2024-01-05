@@ -14,9 +14,9 @@ train_sentences = [" ".join([reverse_word_index.get(i - 3, "?") for i in sentenc
 test_sentences = [" ".join([reverse_word_index.get(i - 3, "?") for i in sentence]) for sentence in test_data]
 
 # Define the hyperparameters
-n = 50
+n = 10
 m = 1000
-k = 50
+k = 10
 
 # Convert the reviews into a list of words
 train_words = [word for sentence in train_sentences for word in sentence.split()]
