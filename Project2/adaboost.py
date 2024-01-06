@@ -3,7 +3,7 @@ from sklearn.metrics import precision_score
 import numpy as np 
 
 class AdaBoost:
-    def __init__(self, n_estimators=1000, learning_rate=0.01):
+    def __init__(self, n_estimators=50, learning_rate=0.01):
         self.n_estimators = n_estimators
         self.learning_rate = learning_rate
 
