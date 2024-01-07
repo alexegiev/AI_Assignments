@@ -5,7 +5,7 @@ from bayes import NaiveBayes  # assuming bayes.py is in the same directory
 from collections import Counter
 
 # Load the IMDB dataset
-(train_data, train_labels), (test_data, test_labels) = imdb.load_data(num_words=10000)
+(train_data, train_labels), (test_data, test_labels) = imdb.load_data(num_words=1000)
 
 # Convert the list of words to sentences
 word_index = imdb.get_word_index()
@@ -79,7 +79,3 @@ plt.show()
 
 # Predict labels for the test data
 nb_predictions = nb.predict(test_vectors)
-
-# Print out some of the reviews with their predicted labels
-for review, label in zip(test_sentences[:10], nb_predictions[:10]):
-    print(f"Review: {review}\nPredicted label: {'Good' if label == 1 else 'Bad'}\n")
