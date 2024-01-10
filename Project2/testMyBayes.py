@@ -1,7 +1,7 @@
 from keras.datasets import imdb
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import accuracy_score
-from bayes import NaiveBayes  # assuming bayes.py is in the same directory
+from Project2.myBayes import NaiveBayes  # assuming bayes.py is in the same directory
 from collections import Counter
 
 # Load the IMDB dataset
@@ -46,7 +46,7 @@ train_vectors = vectorizer.fit_transform(train_sentences)
 # Transform the test data
 test_vectors = vectorizer.transform(test_sentences)
 
-from bayes import NaiveBayes
+from Project2.myBayes import NaiveBayes
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import learning_curve
 import matplotlib.pyplot as plt
