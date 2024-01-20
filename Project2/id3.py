@@ -13,16 +13,18 @@ class Node:
 
 
 class ID3:
-    def __init__(self, features):
+    def __init__(self, features, max_depth=None):
         self.tree = None
         self.features = features
+        self.max_depth = max_depth
     
-    def fit(self, x, y):
+    def fit(self, x, y,max_depth=None):
         '''
         creates the tree
         '''
         most_common = mode(y.flatten())
         self.tree = self.create_tree(x, y, features=np.arange(len(self.features)), category=most_common)
+        self.max_depth = max_depth if max_depth is not None else self.max_depth
         return self.tree
     
     def create_tree(self, x_train, y_train, features, category):
