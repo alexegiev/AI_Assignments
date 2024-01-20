@@ -10,45 +10,21 @@ class RandomForest:
         self.max_depth = max_depth
 
     def fit(self, X, y):
-        self.trees = []
+        self.clfs_ = []
+        self.clf_weights_ = np.ones(self.n_estimators) / self.n_estimators  # Initializing equal weights for each tree
 
         for _ in range(self.n_estimators):
-            # Randomly select a subset of features
-            features_subset = np.random.choice(X.shape[1], size=int(np.sqrt(X.shape[1])), replace=False)
-            X_subset = X[:, features_subset]
+            clf = DecisionTreeClassifier(max_depth=self.max_depth)
+            indices = np.random.choice(X.shape[0], size=X.shape[0], replace=True)
+            clf.fit(X[indices], y[indices])
 
-            # Split the dataset into random subsets
-            X_subsample, y_subsample = self._bootstrap_sample(X_subset, y)
-
-            # Train an ID3 decision tree on the subset
-            id3_tree = ID3(features=features_subset)
-            tree_root = id3_tree.fit(X_subsample, y_subsample, max_depth=self.max_depth)
-
-            self.trees.append(tree_root)
+            self.clfs_.append(clf)
 
         return self
 
     def predict(self, X):
-        predictions = np.array([self._predict_tree(tree, X) for tree in self.trees])
-        return np.apply_along_axis(lambda x: Counter(x).most_common(1)[0][0], axis=0, arr=predictions)
-
-    def _predict_tree(self, tree, X):
-        predicted_classes = []
-        for unlabeled in X:
-            tmp = tree  # Start at the root
-            while not tmp.is_leaf:
-                if unlabeled.flatten()[tmp.checking_feature] == 1:
-                    tmp = tmp.left_child
-                else:
-                    tmp = tmp.right_child
-
-            predicted_classes.append(tmp.category)
-
-        return np.array(predicted_classes)
-
-    def _bootstrap_sample(self, X, y):
-        indices = np.random.choice(X.shape[0], size=X.shape[0], replace=True)
-        return X[indices], y[indices]
+        clf_preds = np.array([clf.predict(X) for clf in self.clfs_])
+        return np.sign(np.dot(self.clf_weights_, clf_preds))
 
     def score(self, X, y):
         y_pred = self.predict(X)
