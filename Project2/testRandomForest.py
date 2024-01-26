@@ -1,5 +1,4 @@
 from keras.datasets import imdb
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer
 from randomForest import RandomForest
 from collections import Counter
